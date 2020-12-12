@@ -194,7 +194,7 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
 /* EC */
 exports.getReadmeByProjectId = async (projectId, _branch) => {
   return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=master`,
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=${_branch}`,
     ...options,
   });
 };
@@ -203,7 +203,7 @@ exports.createReadmeByProjectId = async (projectId, _content, _branch) => {
   const body = {
     content: _content,
     commit_message: "autogenerado por release note generator",
-    branch: "master",
+    branch: _branch,
   };
   return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd`,
@@ -218,7 +218,7 @@ exports.updateReadmeByProjectId = async (projectId, _content, _branch) => {
   const body = {
     content: _content,
     commit_message: "autogenerado por release note generator",
-    branch: "master",
+    branch: _branch,
   };
   return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd`,
@@ -230,9 +230,7 @@ exports.updateReadmeByProjectId = async (projectId, _content, _branch) => {
 
 /* EC */
 exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
-  Logger.debug(`Getting revious README in ${rbrancheq}`);
   const req = await exports.getReadmeByProjectId(projectId, branch);
-  Logger.debug(`Previous README Found: ${req}`);
   /*if (readmeContent) {
     Logger.debug(`Creating a new readme`);
     return await exports.createReadmeByProjectId(projectId, content, branch);
@@ -240,6 +238,5 @@ exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
     
   }*/
   content = req + "\n" + content;
-  Logger.debug(`Updating the readme`);
   return await exports.updateReadmeByProjectId(projectId, content, branch);
 };

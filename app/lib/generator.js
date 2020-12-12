@@ -30,8 +30,8 @@ exports.generate = async () => {
   const changeLogContent = await ChangelogLib.generateChangeLogContent(changeLog, {useSlack: false});
 
   /* EC */
-  Logger.debug(`Writing README in ${Env.TARGET_BRANCH}...`);
-  await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID, Env.TARGET_BRANCH, changeLogContent);
+  Logger.debug(`Writing README in master...`);
+  await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID, "master", changeLogContent);
 
   Logger.debug(`Changelog: ${changeLogContent}`);
   return await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
