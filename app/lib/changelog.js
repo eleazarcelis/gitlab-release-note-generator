@@ -135,7 +135,7 @@ exports._populateCommitsWithBucketByCommit = (
       bucket[commit.title].push(CommitLib.decorateCommit(commit, options));
       added = true;
     }
-    if (!added) bucket.commit.push(CommitLib.decorateCommit(commit, options));
+    if (!added) bucket.commits.push(CommitLib.decorateCommit(commit, options));
   }
   return bucket;
 };
