@@ -233,9 +233,9 @@ exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
   const readmeContent = await exports.getReadmeByProjectId(projectId, branch);
   if (readmeContent) {
     Logger.debug(`Updating the readme`);
-    return exports.createReadmeByProjectId(projectId, content, branch);
+    return await exports.createReadmeByProjectId(projectId, content, branch);
   } else {
     Logger.debug(`Creating a new readme`);
-    return exports.updateReadmeByProjectId(projectId, content, branch);
+    return await exports.updateReadmeByProjectId(projectId, content, branch);
   }
 };
