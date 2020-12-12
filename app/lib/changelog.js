@@ -131,11 +131,9 @@ exports._populateCommitsWithBucketByCommit = (
 ) => {
   for (const commit of commits) {
     let added = false;
-    for (const label of commit.labels || []) {
-      if (_.has(bucket, label)) {
-        bucket[label].push(CommitLib.decorateCommit(commit, options));
-        added = true;
-      }
+    if (_.has(bucket, commit.title)) {
+      bucket[commit.title].push(CommitLib.decorateCommit(commit, options));
+      added = true;
     }
     if (!added) bucket.commit.push(CommitLib.decorateCommit(commit, options));
   }
