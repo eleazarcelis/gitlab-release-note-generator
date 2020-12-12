@@ -194,7 +194,7 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
 /* EC */
 exports.getReadmeByProjectId = async (projectId, _branch) => {
   return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=${_branch}`,
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=master`,
     ...options,
   });
 };
