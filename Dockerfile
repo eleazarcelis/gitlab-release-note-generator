@@ -1,6 +1,6 @@
 FROM node:12.14.1
 
-MAINTAINER Jack Zhang
+MAINTAINER Ele
 
 RUN echo "Running node version: " `node -v`
 RUN echo "Running npm version: " `npm -v`

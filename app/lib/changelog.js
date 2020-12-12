@@ -27,7 +27,9 @@ exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, 
 
   exports._populateIssuesWithBucketByIssue(changelogBucket, issues, options);
 
-  exports._populateMergeRequestsWithBucketByMergeRequests(changelogBucket, mergeRequests, options);
+    exports._populateMergeRequestsWithBucketByMergeRequests(changelogBucket, mergeRequests, options);
+
+    exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);
 
   const labelConfigs = [
     ...LABEL_CONFIG,

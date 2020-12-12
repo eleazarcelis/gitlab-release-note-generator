@@ -1,0 +1,9 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.circleci",
+    "\\app"
+  ],
+  "SelectedNode": "\\.circleci\\config.yml",
+  "PreviewInSolutionExplorer": false
+}
