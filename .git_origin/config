@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "custom"]
+	url = git@gitlab.com:emclick/gitlab-release-note-generator.git
+	fetch = +refs/heads/*:refs/remotes/custom/*

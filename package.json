@@ -1,0 +1,40 @@
+{
+  "name": "gitlab-release-note-generator",
+  "version": "1.2.5",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "test": "jest tests/",
+    "test-with-coverage": "jest tests/ --collectCoverage=true",
+    "lint": "eslint app/**/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jk1z/GitLab-Release-Note-Generator.git"
+  },
+  "author": "Jack Zhang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jk1z/GitLab-Release-Note-Generator/issues"
+  },
+  "homepage": "https://github.com/jk1z/GitLab-Release-Note-Generator#readme",
+  "dependencies": {
+    "chalk": "2.4.2",
+    "lodash": "4.17.15",
+    "moment-timezone": "0.5.25",
+    "parse-link-header": "1.0.1",
+    "request": "2.88.0",
+    "request-promise-native": "1.0.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "eslint": "^5.16.0",
+    "faker": "^4.1.0",
+    "jest": "^24.8.0",
+    "jest-when": "^2.6.0",
+    "mockdate": "^2.0.2",
+    "nock": "^10.0.6",
+    "prettier": "1.17.1"
+  }
+}
