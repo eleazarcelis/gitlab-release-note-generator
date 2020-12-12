@@ -230,7 +230,9 @@ exports.updateReadmeByProjectId = async (projectId, _content, _branch) => {
 
 /* EC */
 exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
+  Logger.debug(`Getting revious README in ${rbrancheq}`);
   const req = await exports.getReadmeByProjectId(projectId, branch);
+  Logger.debug(`Previous README Found: ${req}`);
   /*if (readmeContent) {
     Logger.debug(`Creating a new readme`);
     return await exports.createReadmeByProjectId(projectId, content, branch);
