@@ -2,6 +2,7 @@ const _ = require("lodash");
 const IssueLib = require("./issue");
 const MergeRequestLib = require("./mergeRequest");
 const TagLib = require("./tag");
+const GitlabLib = require("./gitlab");
 const ChangelogLib = require("./changelog");
 const Logger = require("../logger");
 const Moment = require("moment-timezone");
@@ -27,6 +28,10 @@ exports.generate = async () => {
 
   const changeLog = await ChangelogLib.getChangelogByStartAndEndDate(startDate, endDate);
   const changeLogContent = await ChangelogLib.generateChangeLogContent(changeLog, {useSlack: false});
+
+  /* EC */
+  await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID,Env.TARGET_BRANCH, changeLogContent);
+
   Logger.debug(`Changelog: ${changeLogContent}`);
   return await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
 };
