@@ -74,8 +74,7 @@ exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
 /* EC */
 exports.findCommitsByProjectId = async (projectId, query) => {
     const queryString = query ? QueryString.stringify(query) : null;
-    const res = await Request({ uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/${queryString ? `?${queryString}` : ""}`, ...options });
-    return { message: res.message, by: res.author_name }
+    return Request({ uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/${queryString ? `?${queryString}` : ""}`, ...options });
 };
 
 exports.createTagReleaseByProjectIdTagNameAndTagId = async (projectId, tagName, body) => {
