@@ -6,3 +6,4 @@ services:
     environment:
       - GITLAB_PERSONAL_TOKEN=sampleGitlabToken
       - GITLAB_PROJECT_ID=12345678
+      
