@@ -158,7 +158,7 @@ exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
 exports.findCommitsByProjectId = async (projectId, branch, query) => {
   const queryString = query ? QueryString.stringify(query) : null;
   return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/${branch}${
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/${branch}`+`${
       queryString ? `?${queryString}` : ""
     }`,
     ...options,
