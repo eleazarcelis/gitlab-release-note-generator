@@ -169,11 +169,10 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
 };
 /* EC */
 exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
-  const req = Request({
+  const commits = Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits`,
     ...options,
   });
-  const commits = req.body;
   Logger.debug(`req: ${commits.length}`);
   if (commits.length > 0) {
     return commits.filter((item) => {
