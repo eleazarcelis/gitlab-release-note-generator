@@ -167,34 +167,6 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
     ...options,
   });
 };
-
-/* EC */
-exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
-  const res = await Request({
-    uri: `${
-      Env.GITLAB_API_ENDPOINT
-    }/projects/${projectId}/repository/commits/${sha}/refs${
-      queryString ? `?${queryString}` : ""
-    }`,
-    ...options,
-  });
-  return { message: res.message, by: res.author_name };
-};
-
-/* EC */
-exports.findCommitsByProjectId = async (projectId, query) => {
-  const queryString = query ? QueryString.stringify(query) : null;
-  Logger.debug(`${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/master${
-    queryString ? `?${queryString}` : ""
-  }`)
-  return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/master${
-      queryString ? `?${queryString}` : ""
-    }`,
-    ...options,
-  });
-};
-
 /* EC */
 exports.getReadmeByProjectId = async (projectId, _branch) => {
   return Request({

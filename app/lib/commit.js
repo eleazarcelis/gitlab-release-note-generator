@@ -1,24 +1,34 @@
 const Gitlab = require("../adapters/gitlab");
 
 exports.findBranchRefsByProjectIdAndSha = async (projectId, sha) => {
-  return Gitlab.findCommitRefsByProjectIdAndSha(projectId, sha, { type: "branch" });
-};
-/* EC */
-exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
-    return Gitlab.findCommitMessageByProjectIdAndSha(projectId, sha);
+  return Gitlab.findCommitRefsByProjectIdAndSha(projectId, sha, {
+    type: "branch",
+  });
 };
 /* EC */
 exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
-    return Gitlab.findCommitsByProjectId(projectId, {
-        updated_before: endDate,
-        updated_after: startDate
+  const req = Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits${
+      queryString ? `?${queryString}` : ""
+    }`,
+    ...options,
+  });
+  if (req && req.length > 0) {
+    return req.filter((item) => {
+      return (
+        item.committed_date.getTime() >= startDate.getTime() &&
+        item.committed_date.getTime() <= endDate.getTime()
+      );
     });
+  } else {
+    return [];
+  }
 };
 /* EC */
 exports.decorateCommit = (commit, options = {}) => {
-    return exports.gitLabDecorator(commit)
+  return exports.gitLabDecorator(commit);
 };
 /* EC */
 exports.gitLabDecorator = (commit) => {
-    return `- ${commit.title} [#${commit.short_id}](${commit.web_url})`;
+  return `- ${commit.title} [#${commit.short_id}](${commit.web_url})`;
 };
