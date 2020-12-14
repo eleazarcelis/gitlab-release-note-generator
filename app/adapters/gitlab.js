@@ -173,8 +173,10 @@ exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits`,
     ...options,
   });
-  if (req && req.length > 0) {
-    return req.filter((item) => {
+  const commits = req.body;
+  Logger.debug(`req: ${commits.length}`);
+  if (commits.length > 0) {
+    return commits.filter((item) => {
       return (
         item.committed_date.getTime() >= startDate.getTime() &&
         item.committed_date.getTime() <= endDate.getTime()
