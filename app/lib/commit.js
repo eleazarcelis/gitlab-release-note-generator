@@ -8,8 +8,8 @@ exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
     return Gitlab.findCommitMessageByProjectIdAndSha(projectId, sha);
 };
 /* EC */
-exports.findCommitsByProjectId = async (projectId, branch, startDate, endDate) => {
-    return Gitlab.findCommitsByProjectId(projectId, branch, {
+exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
+    return Gitlab.findCommitsByProjectId(projectId, {
         updated_before: endDate,
         updated_after: startDate
     });

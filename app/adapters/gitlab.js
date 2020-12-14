@@ -1,5 +1,6 @@
 const Request = require("request-promise-native");
 const Env = require("../env");
+const Logger = require("../logger");
 const QueryString = require("querystring");
 const LinkHeaderParse = require("parse-link-header");
 
@@ -141,30 +142,6 @@ exports.findCommitRefsByProjectIdAndSha = async (projectId, sha, query) => {
   });
 };
 
-/* EC */
-exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
-  const res = await Request({
-    uri: `${
-      Env.GITLAB_API_ENDPOINT
-    }/projects/${projectId}/repository/commits/${sha}/refs${
-      queryString ? `?${queryString}` : ""
-    }`,
-    ...options,
-  });
-  return { message: res.message, by: res.author_name };
-};
-
-/* EC */
-exports.findCommitsByProjectId = async (projectId, branch, query) => {
-  const queryString = query ? QueryString.stringify(query) : null;
-  return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/master${
-      queryString ? `?${queryString}` : ""
-    }`,
-    ...options,
-  });
-};
-
 exports.createTagReleaseByProjectIdTagNameAndTagId = async (
   projectId,
   tagName,
@@ -187,6 +164,33 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/tags/${tagName}/release`,
     method: "PUT",
     body,
+    ...options,
+  });
+};
+
+/* EC */
+exports.findCommitMessageByProjectIdAndSha = async (projectId, sha) => {
+  const res = await Request({
+    uri: `${
+      Env.GITLAB_API_ENDPOINT
+    }/projects/${projectId}/repository/commits/${sha}/refs${
+      queryString ? `?${queryString}` : ""
+    }`,
+    ...options,
+  });
+  return { message: res.message, by: res.author_name };
+};
+
+/* EC */
+exports.findCommitsByProjectId = async (projectId, query) => {
+  const queryString = query ? QueryString.stringify(query) : null;
+  Logger.debug(`${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/master${
+    queryString ? `?${queryString}` : ""
+  }`)
+  return Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits/master${
+      queryString ? `?${queryString}` : ""
+    }`,
     ...options,
   });
 };
