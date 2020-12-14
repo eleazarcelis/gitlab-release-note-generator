@@ -171,6 +171,7 @@ exports.getChangelogByStartAndEndDate = async (
   /* EC */
   const commits = await CommitLib.findCommitsByProjectId(
     Env.GITLAB_PROJECT_ID,
+    "master",
     startDate,
     endDate
   );
