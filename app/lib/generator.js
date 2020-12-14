@@ -10,12 +10,16 @@ const Env = require("../env");
 
 exports.generate = async () => {
   const tags = await TagLib.getLatestAndSecondLatestTagByProjectId(Env.GITLAB_PROJECT_ID);
+  Logger.debug(`Tags found: ${tags.length}`);
   if (tags.length !== 2) throw new Error("Cannot find latest and second latest tag. Tag Result: " + JSON.stringify(tags));
   const [latestTag, secondLatestTag] = tags;
 
   if (!_.get(latestTag, "commit.committed_date") || !_.get(secondLatestTag, "commit.committed_date")) throw new Error(`Cannot find latest and second latest tag. Abort the program!`);
   const startDate = _.get(secondLatestTag, "commit.committed_date");
   let endDate = _.get(latestTag, "commit.committed_date");
+
+  Logger.debug(`startDate: ${startDate}`);
+  Logger.debug(`endDate: ${endDate}`);
 
   // allow the end date to be adjusted by a few seconds to catch issues that are automatially closed by
   // a MR and are time stamped a few seconds later.
