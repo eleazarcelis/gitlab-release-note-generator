@@ -168,6 +168,23 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
   });
 };
 /* EC */
+exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
+  const req = Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits`,
+    ...options,
+  });
+  if (req && req.length > 0) {
+    return req.filter((item) => {
+      return (
+        item.committed_date.getTime() >= startDate.getTime() &&
+        item.committed_date.getTime() <= endDate.getTime()
+      );
+    });
+  } else {
+    return [];
+  }
+};
+/* EC */
 exports.getReadmeByProjectId = async (projectId, _branch) => {
   return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=${_branch}`,

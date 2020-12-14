@@ -5,24 +5,8 @@ exports.findBranchRefsByProjectIdAndSha = async (projectId, sha) => {
     type: "branch",
   });
 };
-/* EC */
 exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
-  const req = Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits${
-      queryString ? `?${queryString}` : ""
-    }`,
-    ...options,
-  });
-  if (req && req.length > 0) {
-    return req.filter((item) => {
-      return (
-        item.committed_date.getTime() >= startDate.getTime() &&
-        item.committed_date.getTime() <= endDate.getTime()
-      );
-    });
-  } else {
-    return [];
-  }
+    return Gitlab.findCommitsByProjectId(projectId, startDate, endDate);
 };
 /* EC */
 exports.decorateCommit = (commit, options = {}) => {
