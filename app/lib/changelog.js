@@ -35,14 +35,14 @@ exports.generateChangeLogContent = async (
     mergeRequests,
     options
   );
-  /* EC */
-  exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);
+  /* EC 
+  exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);*/
 
   const labelConfigs = [
     ...LABEL_CONFIG,
     { name: "issues", title: "Closed issues", default: true },
     { name: "mergeRequests", title: "Merged merge requests", default: true },
-    { name: "commits", title: "Commits done", default: true } /* EC */,
+    /* { name: "commits", title: "Commits done", default: true } EC ,*/
   ];
   if (options.useSlack) {
     let changelogContent = `*Release note (${Moment.tz(
@@ -123,7 +123,7 @@ exports._populateMergeRequestsWithBucketByMergeRequests = (
   return bucket;
 };
 
-/* EC */
+/* EC
 exports._populateCommitsWithBucketByCommit = (
   bucket,
   commits,
@@ -138,7 +138,7 @@ exports._populateCommitsWithBucketByCommit = (
     if (!added) bucket.commits.push(CommitLib.decorateCommit(commit, options));
   }
   return bucket;
-};
+}; */
 
 exports.getChangelogByStartAndEndDate = async (
   startDate,
@@ -178,7 +178,7 @@ exports.getChangelogByStartAndEndDate = async (
   return {
     mergeRequests,
     issues,
-    commits /* EC */,
+    /* commits EC ,*/
     releaseDate: endDate,
   };
 };

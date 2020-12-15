@@ -169,21 +169,10 @@ exports.updateTagReleaseByProjectIdTagNameAndTagId = async (
 };
 /* EC */
 exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
-  const commits = Request({
+  return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/commits`,
     ...options,
   });
-  Logger.debug(`req: ${commits.length}`);
-  if (commits.length > 0) {
-    return commits.filter((item) => {
-      return (
-        item.committed_date.getTime() >= startDate.getTime() &&
-        item.committed_date.getTime() <= endDate.getTime()
-      );
-    });
-  } else {
-    return [];
-  }
 };
 /* EC */
 exports.getReadmeByProjectId = async (projectId, _branch) => {
