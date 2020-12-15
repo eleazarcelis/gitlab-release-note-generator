@@ -22,7 +22,7 @@ const LABEL_CONFIG = [
 ];
 /* EC */
 exports.generateChangeLogContent = async (
-  { releaseDate, issues, mergeRequests, commits },
+  { releaseDate, issues, mergeRequests },
   options = {}
 ) => {
   // Separate by labels
