@@ -35,7 +35,7 @@ exports.generate = async () => {
 
   /* EC */
   Logger.debug(`Writing README in ${latestTag}...`);
-  await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
+  await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID, latestTag.name, changeLogContent);
 
   Logger.debug(`Changelog: ${changeLogContent}`);
   return await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
