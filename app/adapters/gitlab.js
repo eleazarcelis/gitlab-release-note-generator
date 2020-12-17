@@ -226,6 +226,7 @@ exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
 
 /* EC */
 exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
+  Logger.debug(`${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/merge_requests/${mergeRequest}/commits`)
   return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/merge_requests/${mergeRequest}/commits`,
     ...options,
