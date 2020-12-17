@@ -31,7 +31,7 @@ exports.generate = async () => {
   }
 
   const changeLog = await ChangelogLib.getChangelogByStartAndEndDate(startDate, endDate);
-  const changeLogContent = await ChangelogLib.generateChangeLogContent(changeLog, {useSlack: false});
+  const changeLogContent = await ChangelogLib.generateChangeLogContent(changeLog, latestTag, {useSlack: false});
 
   /* EC */
   Logger.debug(`Writing README in ${Env.TARGET_BRANCH}...`);

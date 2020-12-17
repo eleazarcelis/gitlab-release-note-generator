@@ -21,7 +21,7 @@ const LABEL_CONFIG = [
   { name: "bug", title: "Fixed bugs" },
 ];
 /* EC */
-exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, commits }, options = {} ) => {
+exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, commits }, latestTag, options = {} ) => {
   // Separate by labels
   let changelogBucket = exports._createLabelBucket();
 
@@ -31,7 +31,7 @@ exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, 
 
   exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);/* EC */
 
-  Logger.debug(Env.VERSION);
+  Logger.debug(latestTag.name);
 
   const labelConfigs = [
     ...LABEL_CONFIG,
@@ -55,7 +55,7 @@ exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, 
     let changelogContent = `### Release note (${Moment.tz(
       releaseDate,
       Env.TZ
-    ).format("YYYY-MM-DD")}) version ${Env.VERSION}\n`; /* EC */
+    ).format("YYYY-MM-DD")}) version ${latestTag.name}\n`; /* EC */
     for (const labelConfig of labelConfigs) {
       if (changelogBucket[labelConfig.name]) {
         if (
