@@ -150,7 +150,7 @@ exports.getChangelogByStartAndEndDate = async (startDate, endDate, options = {} 
   Logger.info(`Found ${issues ? issues.length : 0} issues`);
 
   /* EC */
-  let commits = {}
+  let commits = []
   for (const mr of mergeRequests) {
     const _commits = await MergeRequestLib.getCommitByMergeRequest(Env.GITLAB_PROJECT_ID, mr.iid);
     commits.push(_commits);
