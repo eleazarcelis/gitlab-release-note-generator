@@ -15,6 +15,11 @@ exports.getMergeRequestByProjectIdStateStartDateAndEndDate = async (projectId, s
   return mergeRequests;
 };
 
+/* EC */
+exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
+  return await Gitlab.getCommitByMergeRequest(projectId, mergeRequest)
+};
+
 exports.decorateMergeRequest = (mergeRequest, options = {}) => {
   return options.useSlack ? exports.slackDecorator(mergeRequest) : exports.gitLabDecorator(mergeRequest)
 };

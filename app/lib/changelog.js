@@ -21,28 +21,21 @@ const LABEL_CONFIG = [
   { name: "bug", title: "Fixed bugs" },
 ];
 /* EC */
-exports.generateChangeLogContent = async (
-  { releaseDate, issues, mergeRequests },
-  options = {}
-) => {
+exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, commits }, options = {} ) => {
   // Separate by labels
   let changelogBucket = exports._createLabelBucket();
 
   exports._populateIssuesWithBucketByIssue(changelogBucket, issues, options);
 
-  exports._populateMergeRequestsWithBucketByMergeRequests(
-    changelogBucket,
-    mergeRequests,
-    options
-  );
-  /* EC 
-  exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);*/
+  exports._populateMergeRequestsWithBucketByMergeRequests(changelogBucket, mergeRequests, options);
+
+  exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);/* EC */
 
   const labelConfigs = [
     ...LABEL_CONFIG,
     { name: "issues", title: "Closed issues", default: true },
     { name: "mergeRequests", title: "Merged merge requests", default: true },
-    /* { name: "commits", title: "Commits done", default: true } EC ,*/
+    { name: "commits", title: "Commits done", default: true }
   ];
   if (options.useSlack) {
     let changelogContent = `*Release note (${Moment.tz(
@@ -60,7 +53,7 @@ exports.generateChangeLogContent = async (
     let changelogContent = `### Release note (${Moment.tz(
       releaseDate,
       Env.TZ
-    ).format("YYYY-MM-DD")})\n`;
+    ).format("YYYY-MM-DD")}) version ${Env.VERSION}\n`; /* EC */
     for (const labelConfig of labelConfigs) {
       if (changelogBucket[labelConfig.name]) {
         if (
@@ -100,11 +93,7 @@ exports._populateIssuesWithBucketByIssue = (bucket, issues, options = {}) => {
   return bucket;
 };
 
-exports._populateMergeRequestsWithBucketByMergeRequests = (
-  bucket,
-  mergeRequests,
-  options = {}
-) => {
+exports._populateMergeRequestsWithBucketByMergeRequests = (bucket, mergeRequests, options = {} ) => {
   for (const mergeRequest of mergeRequests) {
     let added = false;
     for (const label of mergeRequest.labels || []) {
@@ -123,12 +112,8 @@ exports._populateMergeRequestsWithBucketByMergeRequests = (
   return bucket;
 };
 
-/* EC
-exports._populateCommitsWithBucketByCommit = (
-  bucket,
-  commits,
-  options = {}
-) => {
+/* EC */
+exports._populateCommitsWithBucketByCommit = (bucket, commits, options = {} ) => {
   for (const commit of commits) {
     let added = false;
     if (_.has(bucket, commit.title)) {
@@ -138,13 +123,9 @@ exports._populateCommitsWithBucketByCommit = (
     if (!added) bucket.commits.push(CommitLib.decorateCommit(commit, options));
   }
   return bucket;
-}; */
+};
 
-exports.getChangelogByStartAndEndDate = async (
-  startDate,
-  endDate,
-  options = {}
-) => {
+exports.getChangelogByStartAndEndDate = async (startDate, endDate, options = {} ) => {
   Logger.info(
     `Time range that we are looking at MRs and issues is between ${Moment.tz(
       startDate,
@@ -169,16 +150,16 @@ exports.getChangelogByStartAndEndDate = async (
   Logger.info(`Found ${issues ? issues.length : 0} issues`);
 
   /* EC */
-  const commits = await CommitLib.findCommitsByProjectId(
-    Env.GITLAB_PROJECT_ID,
-    startDate,
-    endDate
-  );
+  let commits = {}
+  for (const mr of mergeRequests) {
+    commits = await MergeRequestLib.getCommitByMergeRequest(Env.GITLAB_PROJECT_ID, mr);
+  }
   Logger.info(`Found ${commits ? commits.length : 0} commits`);
+  
   return {
     mergeRequests,
     issues,
-    /* commits EC ,*/
+    commits,
     releaseDate: endDate,
   };
 };

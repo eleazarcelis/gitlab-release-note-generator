@@ -223,3 +223,11 @@ exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
   content = content + "\n" + req;
   return await exports.updateReadmeByProjectId(projectId, content, branch);
 };
+
+/* EC */
+exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
+  return Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/merge_requests/${mergeRequest}/commits`,
+    ...options,
+  });
+};
