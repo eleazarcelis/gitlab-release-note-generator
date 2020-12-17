@@ -177,7 +177,7 @@ exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
 /* EC */
 exports.getFileByProjectId = async (projectId, fileName, branch) => {
   return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/${fileName}raw?ref=${branch}`,
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/${fileName}/raw?ref=${branch}`,
     ...options,
   });
 };
