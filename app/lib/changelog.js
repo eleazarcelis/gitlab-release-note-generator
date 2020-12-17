@@ -31,6 +31,8 @@ exports.generateChangeLogContent = async ({ releaseDate, issues, mergeRequests, 
 
   exports._populateCommitsWithBucketByCommit(changelogBucket, commits, options);/* EC */
 
+  Logger.debug(Env.VERSION);
+
   const labelConfigs = [
     ...LABEL_CONFIG,
     { name: "issues", title: "Closed issues", default: true },
