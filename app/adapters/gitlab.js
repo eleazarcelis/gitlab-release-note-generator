@@ -175,9 +175,9 @@ exports.findCommitsByProjectId = async (projectId, startDate, endDate) => {
   });
 };
 /* EC */
-exports.getReadmeByProjectId = async (projectId, _branch) => {
+exports.getFileByProjectId = async (projectId, fileName, branch) => {
   return Request({
-    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/README%2Emd/raw?ref=${_branch}`,
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/${fileName}raw?ref=${branch}`,
     ...options,
   });
 };
@@ -213,7 +213,7 @@ exports.updateReadmeByProjectId = async (projectId, _content, _branch) => {
 
 /* EC */
 exports.upsertReadmeContentByProjectId = async (projectId, branch, content) => {
-  const req = await exports.getReadmeByProjectId(projectId, branch);
+  const req = await exports.getFileByProjectId(projectId, "README%2Emd", branch);
   /*if (readmeContent) {
     Logger.debug(`Creating a new readme`);
     return await exports.createReadmeByProjectId(projectId, content, branch);
@@ -229,6 +229,31 @@ exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
   Logger.debug(`${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/merge_requests/${mergeRequest}/commits`)
   return Request({
     uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/merge_requests/${mergeRequest}/commits`,
+    ...options,
+  });
+};
+
+/* EC */
+exports.upgradePackageVersion = async (projectId, branch) => {
+  const file = await exports.getFileByProjectId(projectId, "package%2Ejson", branch);
+  
+  let jsonText = JSON.parse(file);
+  let v = jsonText.version;
+  let sv = v.split(".");
+  sv[sv.length-1] = (Number(sv[sv.length-1])+1).toString();
+  v = sv.join(".");
+  jsonText.version = v;
+
+  const body = {
+    content: JSON.stringify(jsonText),
+    commit_message: "autogenerado por release note generator",
+    branch: branch,
+  };
+
+  return Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/package%2Ejson`,
+    method: "PUT",
+    body,
     ...options,
   });
 };

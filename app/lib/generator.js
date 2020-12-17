@@ -38,5 +38,9 @@ exports.generate = async () => {
   await GitlabLib.upsertReadmeContentByProjectId(Env.GITLAB_PROJECT_ID, Env.TARGET_BRANCH, changeLogContent);
 
   Logger.debug(`Changelog: ${changeLogContent}`);
-  return await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
+  await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
+
+  /* EC */
+  Logger.debug(`Upgrading package version in: ${Env.TARGET_BRANCH}`);
+  return await GitlabLib.upgradePackageVersion(Env.GITLAB_PROJECT_ID, Env.TARGET_BRANCH);
 };
