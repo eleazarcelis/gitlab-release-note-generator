@@ -200,7 +200,7 @@ exports.createReadmeByProjectId = async (projectId, _content, _branch) => {
 exports.updateReadmeByProjectId = async (projectId, _content, _branch) => {
   const body = {
     content: _content,
-    commit_message: "autogenerado por release note generator",
+    commit_message: `update readme file in ${_branch} - autogenerado por release note generator`,
     branch: _branch,
   };
   return Request({
@@ -248,7 +248,7 @@ exports.upgradePackageVersion = async (projectId, sourceBranch, targetBranch) =>
   Logger.debug(`upgrading version to: ${jsonText.version} in ${sourceBranch}`)
   let body = {
     content: JSON.stringify(jsonText, null, 2),
-    commit_message: "autogenerado por release note generator",
+    commit_message: `update version in ${sourceBranch} - autogenerado por release note generator`,
     branch: sourceBranch,
   };
 
