@@ -234,8 +234,8 @@ exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
 };
 
 /* EC */
-exports.upgradePackageVersion = async (projectId, branch) => {
-  const file = await exports.getFileByProjectId(projectId, "package%2Ejson", branch);
+exports.upgradePackageVersion = async (projectId, sourceBranch, targetBranch) => {
+  const file = await exports.getFileByProjectId(projectId, "package%2Ejson", targetBranch);
   Logger.debug("read package.json file...");
   let jsonText = JSON.parse(JSON.stringify(file));
   let v = jsonText.version;
@@ -244,12 +244,26 @@ exports.upgradePackageVersion = async (projectId, branch) => {
   sv[sv.length-1] = (Number(sv[sv.length-1])+1).toString();
   v = sv.join(".");
   jsonText.version = v;
-  Logger.debug(`upgrading version to: ${jsonText.version}`)
+  Logger.debug(`upgrading version to: ${jsonText.version} in ${targetBranch}`)
   
-  const body = {
+  let body = {
     content: JSON.stringify(jsonText, null, '\t'),
     commit_message: "autogenerado por release note generator",
-    branch: branch,
+    branch: targetBranch,
+  };
+
+  const req1 = await Request({
+    uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/package%2Ejson`,
+    method: "PUT",
+    body,
+    ...options,
+  });
+
+  Logger.debug(`upgrading version to: ${jsonText.version} in ${sourceBranch}`)
+  let body = {
+    content: JSON.stringify(jsonText, null, '\t'),
+    commit_message: "autogenerado por release note generator",
+    branch: sourceBranch,
   };
 
   return Request({

@@ -41,6 +41,6 @@ exports.generate = async () => {
   await TagLib.upsertTagDescriptionByProjectIdAndTag(Env.GITLAB_PROJECT_ID, latestTag, changeLogContent);
 
   /* EC */
-  Logger.debug(`Upgrading package version in: ${Env.TARGET_BRANCH}`);
-  return await GitlabLib.upgradePackageVersion(Env.GITLAB_PROJECT_ID, Env.TARGET_BRANCH);
+  Logger.debug(`Upgrading package version`);
+  return await GitlabLib.upgradePackageVersion(Env.GITLAB_PROJECT_ID, Env.SOURCE_BRANCH, Env.TARGET_BRANCH);
 };
