@@ -236,14 +236,17 @@ exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
 /* EC */
 exports.upgradePackageVersion = async (projectId, branch) => {
   const file = await exports.getFileByProjectId(projectId, "package%2Ejson", branch);
-  
+  Logger.debug("read package.json file...")
   let jsonText = JSON.parse(file);
   let v = jsonText.version;
+  Logger.debug(`current version is: ${v}`)
   let sv = v.split(".");
   sv[sv.length-1] = (Number(sv[sv.length-1])+1).toString();
   v = sv.join(".");
   jsonText.version = v;
-
+  Logger.debug(`upgrading version to: ${jsonText.version}`)
+  
+  Logger.debug(`result package.json\n: ${JSON.stringify(jsonText)}`)
   const body = {
     content: JSON.stringify(jsonText),
     commit_message: "autogenerado por release note generator",
