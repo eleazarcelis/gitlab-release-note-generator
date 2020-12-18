@@ -246,7 +246,6 @@ exports.upgradePackageVersion = async (projectId, branch) => {
   jsonText.version = v;
   Logger.debug(`upgrading version to: ${jsonText.version}`)
   
-  Logger.debug(`result package.json\n: ${JSON.stringify(jsonText)}`)
   const body = {
     content: JSON.stringify(jsonText),
     commit_message: "autogenerado por release note generator",
