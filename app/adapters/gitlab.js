@@ -245,27 +245,11 @@ exports.upgradePackageVersion = async (projectId, sourceBranch, targetBranch) =>
   v = sv.join(".");
   jsonText.version = v;
 
-  if(sourceBranch == "develop") {
-    Logger.debug(`upgrading version to: ${jsonText.version} in ${sourceBranch}`)
-    let body = {
-      content: JSON.stringify(jsonText, null, '\t'),
-      commit_message: "autogenerado por release note generator",
-      branch: sourceBranch,
-    };
-  
-    const req1 = await Request({
-      uri: `${Env.GITLAB_API_ENDPOINT}/projects/${projectId}/repository/files/package%2Ejson`,
-      method: "PUT",
-      body,
-      ...options,
-    });
-  }
-
-  Logger.debug(`upgrading version to: ${jsonText.version} in ${targetBranch}`)
+  Logger.debug(`upgrading version to: ${jsonText.version} in ${sourceBranch}`)
   let body = {
-    content: JSON.stringify(jsonText, null, '\t'),
+    content: JSON.stringify(jsonText, null, 2),
     commit_message: "autogenerado por release note generator",
-    branch: targetBranch,
+    branch: sourceBranch,
   };
 
   return Request({
