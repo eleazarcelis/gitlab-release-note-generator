@@ -236,8 +236,9 @@ exports.getCommitByMergeRequest = async (projectId, mergeRequest) => {
 /* EC */
 exports.upgradePackageVersion = async (projectId, branch) => {
   const file = await exports.getFileByProjectId(projectId, "package%2Ejson", branch);
-  Logger.debug("read package.json file...")
-  let jsonText = JSON.parse(file);
+  Logger.debug("read package.json file...");
+  Logger.debug(`${file.toString()}`);
+  let jsonText = JSON.parse(file.toString());
   let v = jsonText.version;
   Logger.debug(`current version is: ${v}`)
   let sv = v.split(".");
